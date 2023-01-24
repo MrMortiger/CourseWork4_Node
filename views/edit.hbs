@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Редактирование даних людини</title>
+    <meta charset="utf-8" />
+    <style>
+        .field {
+            width: 180px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Редактирование даних людини</h1>
+    <form action="/edit" method="POST">
+        <input type="hidden" name="id" value="{{person.id}}" />
+        <label>Ім'я</label><br>
+        <input name="name" value="{{person.name}}" class="field" /><br><br>
+        <label>Фамілія</label><br>
+        <input name="surname" value="{{person.surname}}" class="field" /><br><br>
+        <label>Дата народження</label><br>
+        <input name="dateOfBirth" value="{{person.dateOfBirth}}" class="field" /><br><br>
+        <input type="submit" value="Отправить" />
+    </form>
+    <a href="/">До списку людей</a>
+</body>
+<html>
