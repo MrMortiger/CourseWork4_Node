@@ -9,9 +9,10 @@ const pool = mysql.createPool({
   host: "localhost",
   user: "User",
   database: "airport",
-  password: "1"
+  password: "1",
+  dateStrings: true
 });
- 
+
 app.set("view engine", "hbs");
  
 // получение списка пользователей
@@ -31,9 +32,9 @@ app.get("/create", function(req, res){
 app.post("/create", urlencodedParser, function (req, res) {
          
     if(!req.body) return res.sendStatus(400);
-  const name = req.body.name;
-  const surname = req.body.surname;
-    const dateOfBirth = req.body.dateOfBirth;
+  const name = req.body.Name;
+  const surname = req.body.Surname;
+    const dateOfBirth = req.body.DateOfBirth;
     pool.query("INSERT INTO person (Name, Surname, DateOfBirth) VALUES (?,?,?)", [name, surname, dateOfBirth], function(err, data) {
       if(err) return console.log(err);
       res.redirect("/");
@@ -41,12 +42,12 @@ app.post("/create", urlencodedParser, function (req, res) {
 });
  
 // получем id редактируемого пользователя, получаем его из бд и отправлям с формой редактирования
-app.get("/edit/:id", function(req, res){
-  const id = req.params.id;
-  pool.query("SELECT * FROM person WHERE idPerson=?", [id], function(err, data) {
+app.get("/edit/:IdPerson", function(req, res){
+  const id = req.params.IdPerson;
+  pool.query("SELECT * FROM person WHERE IdPerson=?", [id], function(err, data) {
     if(err) return console.log(err);
      res.render("edit.hbs", {
-        person: data[0]
+       person: data[0]
     });
   });
 });
@@ -54,26 +55,27 @@ app.get("/edit/:id", function(req, res){
 app.post("/edit", urlencodedParser, function (req, res) {
          
   if(!req.body) return res.sendStatus(400);
-  const name = req.body.name;
-  const surname = req.body.age;
-  const id = req.body.id;
+  const name = req.body.Name;
+  const surname = req.body.Surname;
+  const date = req.body.DateOfBirth;
+  const id = req.body.IdPerson;
    
-  pool.query("UPDATE person SET Name=?, Surname=? WHERE IdPerson=?", [name, surname, id], function(err, data) {
+  pool.query("UPDATE person SET Name=?, Surname=?, DateOfBirth=? WHERE IdPerson=?", [name, surname, date, id], function(err, data) {
     if(err) return console.log(err);
     res.redirect("/");
   });
 });
  
 // получаем id удаляемого пользователя и удаляем его из бд
-app.post("/delete/:id", function(req, res){
-          
-  const id = req.params.id;
+app.post("/delete/:IdPerson", function(req, res){
+  const id = req.params.IdPerson;
   pool.query("DELETE FROM person WHERE IdPerson=?", [id], function(err, data) {
     if(err) return console.log(err);
     res.redirect("/");
   });
 });
- 
+
 app.listen(3000, function(){
   console.log("Сервер ожидает подключения...");
 });
+

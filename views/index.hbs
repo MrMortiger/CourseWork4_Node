@@ -21,9 +21,10 @@
         <tr>
             <td>{{this.Name}}</td>
             <td>{{this.Surname}}</td>
+            <td>{{this.DateOfBirth}}</td>
             <td>
-                <a href="/edit/{{this.id}}">Edit</a>|
-                <form action="delete/{{this.id}}" method="POST" style="display:inline;">
+                <a href="/edit/{{this.IdPerson}}">Edit</a>|
+                <form action="delete/{{this.IdPerson}}" method="POST" style="display:inline;">
                     <input type="submit" value="Delete" />
                 </form>
             </td>
