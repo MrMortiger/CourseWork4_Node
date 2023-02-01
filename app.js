@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const express = require("express");
- 
+const hbs = require("hbs");
+hbs.registerPartials(__dirname + "/views/partials");
+
 const app = express();
 const urlencodedParser = express.urlencoded({extended: false});
  
