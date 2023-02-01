@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список людей</title>
+    <title>Список пользователей</title>
+    <meta charset="utf-8" />
 </head>
 
 <body>
-    <h1>Список людей</h1>
-    <p><a href="/create">Додати людину</a></p>
+    <h1>Список пользователей</h1>
+    <p><a href="/create">Добавить пользователя</a></p>
     <table>
         <tr>
             <th>Name</th>
             <th>Surname</th>
-            <th>Date of birth</th>
+            <th>Date of Birth</th>
             <th></th>
         </tr>
         {{#each person}}
         <tr>
-            <td>{{this.Name}}</td>
-            <td>{{this.Surname}}</td>
-            <td>{{this.DateOfBirth}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.surname}}</td>
+            <td>{{this.dateOfBirth}}</td>
             <td>
-                <a href="/edit/{{this.IdPerson}}">Edit</a>|
-                <form action="delete/{{this.IdPerson}}" method="POST" style="display:inline;">
+                <a href="/edit/{{this.idPerson}}">Edit</a>|
+                <form action="delete/{{this.idPerson}}" method="POST" style="display:inline;">
                     <input type="submit" value="Delete" />
                 </form>
             </td>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Додання даних людини</title>
+    <title>Добавление пользователя</title>
     <meta charset="utf-8" />
     <style>
         .field {
@@ -12,16 +12,14 @@
 </head>
 
 <body>
-    <h1>Додання даних людини</h1>
+    <h1>Добавление пользователя</h1>
     <form method="POST">
-        <label>Ім'я</label><br>
-        <input name="Name" class="field" /><br><br>
-        <label>Прізвище</label><br>
-        <input name="Surname" class="field" /><br><br>
-        <label>Дата народження</label><br>
-        <input name="DateOfBirth" class="field" /><br><br>
+        <label>Имя</label><br>
+        <input name="name" class="field" /><br><br>
+        <label>Возраст</label><br>
+        <input name="age" type="number" class="field" min="1" max="110" /><br><br>
         <input type="submit" value="Отправить" />
     </form>
-    <a href="/">До списку людей</a>
+    <a href="/">К списку пользователей</a>
 </body>
 <html>

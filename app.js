@@ -1,81 +1,107 @@
-const mysql = require("mysql2");
+const Sequelize = require("sequelize");
 const express = require("express");
  
 const app = express();
 const urlencodedParser = express.urlencoded({extended: false});
  
-const pool = mysql.createPool({
-  connectionLimit: 5,
+// визначаємо об'єкт Sequelize
+const sequelize = new Sequelize("airport", "User", "1", {
+  dialect: "mysql",
   host: "localhost",
-  user: "User",
-  database: "airport",
-  password: "1",
-  dateStrings: true
+  define: {
+    timestamps: false,
+    freezeTableName: true
+  }
 });
-
+ 
+// визначаємо модель Person
+const Person = sequelize.define("person", {
+  idPerson: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  surname: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  dateOfBirth: {
+    type: Sequelize.DATEONLY,
+    allowNull: false
+  }
+});
+ 
 app.set("view engine", "hbs");
  
-// получение списка пользователей
+// сінхронизація з бд, после успеной синхронізації запускаємо сервер
+sequelize.sync().then(()=>{
+  app.listen(3000, function(){
+    console.log("Сервер ожидает подключения...");
+  });
+}).catch(err=>console.log(err));
+ 
+// отримання даних
 app.get("/", function(req, res){
-    pool.query("SELECT * FROM person", function(err, data) {
-      if(err) return console.log(err);
+    Person.findAll({raw: true }).then(data=>{
       res.render("index.hbs", {
-          person: data
+        person: data
       });
-    });
+    }).catch(err=>console.log(err));
 });
-// возвращаем форму для добавления данных
+ 
 app.get("/create", function(req, res){
     res.render("create.hbs");
 });
-// получаем отправленные данные и добавляем их в БД 
+ 
+// додання даних
 app.post("/create", urlencodedParser, function (req, res) {
          
     if(!req.body) return res.sendStatus(400);
-  const name = req.body.Name;
-  const surname = req.body.Surname;
-    const dateOfBirth = req.body.DateOfBirth;
-    pool.query("INSERT INTO person (Name, Surname, DateOfBirth) VALUES (?,?,?)", [name, surname, dateOfBirth], function(err, data) {
-      if(err) return console.log(err);
+         
+    const personName = req.body.name;
+    const personSurname = req.body.surname;
+    const persondateOfBirth = req.body.dateOfBirth;
+    User.create({ name: personName, surname: personSurname, dateOfBirth: persondateOfBirth}).then(()=>{
       res.redirect("/");
-    });
+    }).catch(err=>console.log(err));
 });
  
-// получем id редактируемого пользователя, получаем его из бд и отправлям с формой редактирования
-app.get("/edit/:IdPerson", function(req, res){
-  const id = req.params.IdPerson;
-  pool.query("SELECT * FROM person WHERE IdPerson=?", [id], function(err, data) {
-    if(err) return console.log(err);
-     res.render("edit.hbs", {
-       person: data[0]
+// отримуємо объект по id для редактувания
+app.get("/edit/:id", function(req, res){
+  const personId = req.params.idPerson;
+  User.findAll({where:{idPerson: personId}, raw: true })
+  .then(data=>{
+    res.render("edit.hbs", {
+      user: data[0]
     });
-  });
+  })
+  .catch(err=>console.log(err));
 });
-// получаем отредактированные данные и отправляем их в БД
+ 
+// оновлення даних в БД
 app.post("/edit", urlencodedParser, function (req, res) {
          
-  if(!req.body) return res.sendStatus(400);
-  const name = req.body.Name;
-  const surname = req.body.Surname;
-  const date = req.body.DateOfBirth;
-  const id = req.body.IdPerson;
-   
-  pool.query("UPDATE person SET Name=?, Surname=?, DateOfBirth=? WHERE IdPerson=?", [name, surname, date, id], function(err, data) {
-    if(err) return console.log(err);
+  if (!req.body) return res.sendStatus(400);
+  
+ const personId = req.body.idPerson;
+  const personName = req.body.name;
+  const personSurname = req.body.surname;
+  const persondateOfBirth = req.body.dateOfBirth;
+  User.update({name: personName, surname: personSurname, idPerson: persondateOfBirth}, {where: {idPerson: personId} }).then(() => {
     res.redirect("/");
-  });
+  })
+  .catch(err=>console.log(err));
 });
  
-// получаем id удаляемого пользователя и удаляем его из бд
-app.post("/delete/:IdPerson", function(req, res){
-  const id = req.params.IdPerson;
-  pool.query("DELETE FROM person WHERE IdPerson=?", [id], function(err, data) {
-    if(err) return console.log(err);
+// видалення даних
+app.post("/delete/:id", function(req, res){  
+  const personId = req.params.idPerson;
+  User.destroy({where: {idPerson: personId} }).then(() => {
     res.redirect("/");
-  });
+  }).catch(err=>console.log(err));
 });
-
-app.listen(3000, function(){
-  console.log("Сервер ожидает подключения...");
-});
-
