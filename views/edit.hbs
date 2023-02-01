@@ -14,7 +14,7 @@
 <body>
     <h1>Редактирование пользователя</h1>
     <form action="/edit" method="POST">
-        <input type="hidden" name="id" value="{{peson.idPerson}}" />
+        <input type="hidden" name="idPerson" value="{{person.idPerson}}" />
         <label>Ім'я</label><br>
         <input name="name" value="{{person.name}}" class="field" /><br><br>
         <label>Прізвище</label><br>
@@ -23,6 +23,6 @@
         <input name="dateOfBirth" type="date" value="{{person.dateOfBirth}}" class="field" /><br><br>
         <input type="submit" value="Отправить" />
     </form>
-    <a href="/">К списку пользователей</a>
+    <a href="/personTable">К списку пользователей</a>
 </body>
 <html>

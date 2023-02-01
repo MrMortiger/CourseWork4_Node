@@ -14,12 +14,14 @@
 <body>
     <h1>Добавление пользователя</h1>
     <form method="POST">
-        <label>Имя</label><br>
+        <label>Ім'я</label><br>
         <input name="name" class="field" /><br><br>
-        <label>Возраст</label><br>
-        <input name="age" type="number" class="field" min="1" max="110" /><br><br>
-        <input type="submit" value="Отправить" />
+        <label>Прізвище</label><br>
+        <input surname="surname" class="field"/><br><br>
+        <label>Дата народження</label><br>
+        <input name="dateOfBirth" class="field"/><br><br>
+        <input type="submit" value="Отправить"/>
     </form>
-    <a href="/">К списку пользователей</a>
+    <a href="/personTable">К списку пользователей</a>
 </body>
 <html>

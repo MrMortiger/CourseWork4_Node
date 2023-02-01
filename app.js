@@ -37,54 +37,58 @@ const Person = sequelize.define("person", {
 });
  
 app.set("view engine", "hbs");
- 
+
 // сінхронизація з бд, после успеной синхронізації запускаємо сервер
 sequelize.sync().then(()=>{
   app.listen(3000, function(){
     console.log("Сервер ожидает подключения...");
   });
 }).catch(err=>console.log(err));
- 
+
+app.get("/", function (req, res) {
+  res.render("index.hbs");
+})
+
 // отримання даних
-app.get("/", function(req, res){
+app.get("/personTable", function(req, res){
     Person.findAll({raw: true }).then(data=>{
-      res.render("index.hbs", {
+      res.render("personTable.hbs", {
         person: data
       });
     }).catch(err=>console.log(err));
 });
  
-app.get("/create", function(req, res){
+app.get("/personTable/create", function(req, res){
     res.render("create.hbs");
 });
  
 // додання даних
-app.post("/create", urlencodedParser, function (req, res) {
+app.post("/personTable/create", urlencodedParser, function (req, res) {
          
     if(!req.body) return res.sendStatus(400);
          
     const personName = req.body.name;
     const personSurname = req.body.surname;
     const persondateOfBirth = req.body.dateOfBirth;
-    User.create({ name: personName, surname: personSurname, dateOfBirth: persondateOfBirth}).then(()=>{
-      res.redirect("/");
+    Person.create({ name: personName, surname: personSurname, dateOfBirth: persondateOfBirth}).then(()=>{
+      res.redirect("/personTable");
     }).catch(err=>console.log(err));
 });
  
 // отримуємо объект по id для редактувания
-app.get("/edit/:id", function(req, res){
+app.get("/personTable/edit/:idPerson", function(req, res){
   const personId = req.params.idPerson;
-  User.findAll({where:{idPerson: personId}, raw: true })
+  Person.findAll({where:{idPerson: personId}, raw: true })
   .then(data=>{
     res.render("edit.hbs", {
-      user: data[0]
+      person: data[0]
     });
   })
   .catch(err=>console.log(err));
 });
  
 // оновлення даних в БД
-app.post("/edit", urlencodedParser, function (req, res) {
+app.post("/personTable/edit", urlencodedParser, function (req, res) {
          
   if (!req.body) return res.sendStatus(400);
   
@@ -92,16 +96,16 @@ app.post("/edit", urlencodedParser, function (req, res) {
   const personName = req.body.name;
   const personSurname = req.body.surname;
   const persondateOfBirth = req.body.dateOfBirth;
-  User.update({name: personName, surname: personSurname, idPerson: persondateOfBirth}, {where: {idPerson: personId} }).then(() => {
-    res.redirect("/");
+  Person.update({name: personName, surname: personSurname, idPerson: persondateOfBirth}, {where: {idPerson: personId} }).then(() => {
+    res.redirect("/personTable");
   })
   .catch(err=>console.log(err));
 });
  
 // видалення даних
-app.post("/delete/:id", function(req, res){  
+app.post("/personTable/delete/:idPerson", function(req, res){  
   const personId = req.params.idPerson;
-  User.destroy({where: {idPerson: personId} }).then(() => {
-    res.redirect("/");
+  Person.destroy({where: {idPerson: personId} }).then(() => {
+    res.redirect("/personTable");
   }).catch(err=>console.log(err));
 });
