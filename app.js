@@ -4,7 +4,9 @@ const hbs = require("hbs");
 hbs.registerPartials(__dirname + "/views/partials");
 
 const app = express();
-const urlencodedParser = express.urlencoded({extended: false});
+const urlencodedParser = express.urlencoded({ extended: false });
+
+app.use(express.static(__dirname + '/views'))
  
 // визначаємо об'єкт Sequelize
 const sequelize = new Sequelize("airport", "User", "1", {
@@ -37,7 +39,7 @@ const Person = sequelize.define("person", {
     allowNull: false
   }
 });
- 
+
 app.set("view engine", "hbs");
 
 // сінхронизація з бд, после успеной синхронізації запускаємо сервер
@@ -111,3 +113,4 @@ app.post("/personTable/delete/:idPerson", function(req, res){
     res.redirect("/personTable");
   }).catch(err=>console.log(err));
 });
+

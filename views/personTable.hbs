@@ -4,36 +4,80 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список пользователей</title>
+    <title>Список людей</title>
     <meta charset="utf-8" />
 </head>
+<script>
+    function sortTable(n) { //Сортування
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("table1");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
 <body>
     {{> menu}}
 
-    <h1>Список пользователей</h1>
-    <p><a href="/personTable/create">Добавить пользователя</a></p>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Date of Birth</th>
-            <th></th>
-        </tr>
-        {{#each person}}
-        <tr>
-            <td>{{this.name}}</td>
-            <td>{{this.surname}}</td>
-            <td>{{this.dateOfBirth}}</td>
-            <td>
-                <a href="/personTable/edit/{{this.idPerson}}">Edit</a>|
-                <form action="/personTable/delete/{{this.idPerson}}" method="POST" style="display:inline;">
-                    <input type="submit" value="Delete" />
-                </form>
-            </td>
-        </tr>
-        {{/each}}
-    </table>
+<div class="Db">
+    <div class="Db-data">
+        <h1>Список пользователей</h1>
+        <p><a href="/personTable/create">Добавить пользователя</a></p>
+        <table id="table1">
+            <tr>
+                <th onclick="sortTable(0)">Name</th>
+                <th onclick="sortTable(1)">Surname</th>
+                <th onclick="sortTable(2)">Date of Birth</th>
+                <th></th>
+            </tr>
+            {{#each person}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.surname}}</td>
+                <td>{{this.dateOfBirth}}</td>
+                <td>
+                    <a href="/personTable/edit/{{this.idPerson}}">Edit</a>|
+                    <form action="/personTable/delete/{{this.idPerson}}" method="POST" style="display:inline;">
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </table>
 
+    </div>
+    
+</div>
+    
     {{> footer}}
 </body>
 <html>
