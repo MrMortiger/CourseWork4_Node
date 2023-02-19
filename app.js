@@ -1,4 +1,3 @@
-const Sequelize = require("sequelize");
 const express = require("express");
 const hbs = require("hbs");
 hbs.registerPartials(__dirname + "/views/partials");
@@ -7,42 +6,11 @@ const app = express();
 const urlencodedParser = express.urlencoded({ extended: false });
 
 app.use(express.static(__dirname + '/views'))
- 
-// визначаємо об'єкт Sequelize
-const sequelize = new Sequelize("airport", "User", "1", {
-  dialect: "mysql",
-  host: "localhost",
-  define: {
-    timestamps: false,
-    freezeTableName: true
-  }
-});
- 
-// визначаємо модель Person
-const Person = sequelize.define("person", {
-  idPerson: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false
-  },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  surname: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  dateOfBirth: {
-    type: Sequelize.DATEONLY,
-    allowNull: false
-  }
-});
 
 app.set("view engine", "hbs");
 
 // сінхронизація з бд, после успеной синхронізації запускаємо сервер
+const sequelize = require('./config/database')
 sequelize.sync().then(()=>{
   app.listen(3000, function(){
     console.log("Сервер ожидает подключения...");
@@ -54,6 +22,7 @@ app.get("/", function (req, res) {
 })
 
 // отримання даних
+const Person = require('./models/Person')
 app.get("/personTable", function(req, res){
     Person.findAll({raw: true }).then(data=>{
       res.render("personTable.hbs", {
