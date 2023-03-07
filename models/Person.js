@@ -1,32 +1,46 @@
-const Sequelize = require('sequelize')
-const sequelize = require('../config/database')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const Address = require('./Address');
 
-const Person = sequelize.define('person', {
+const Person = sequelize.define('Person', {
   idPerson: {
-    type: Sequelize.INTEGER.UNSIGNED,
-    allowNull: false,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true
   },
-  name: {
-    type: Sequelize.STRING(50),
+  idAddress: {
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
-    defaultValue: ''
+    references: {
+      model: Address,
+      key: 'IdAddress'
+    },
+    onUpdate: 'NO ACTION',
+    onDelete: 'CASCADE'
+  },
+  name: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    defaultValue: '',
+    collate: 'utf8mb4_0900_ai_ci'
   },
   surname: {
-    type: Sequelize.STRING(50),
+    type: DataTypes.STRING(50),
     allowNull: false,
-    defaultValue: ''
+    defaultValue: '',
+    collate: 'utf8mb4_0900_ai_ci'
   },
   dateOfBirth: {
-    type: Sequelize.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false
   }
 }, {
   tableName: 'person',
-  charset: 'utf8mb4',
-  collate: 'utf8mb4_0900_ai_ci',
   timestamps: false
+});
+
+Person.belongsTo(Address, {
+  foreignKey: 'idAddress'
 });
 
 module.exports = Person;

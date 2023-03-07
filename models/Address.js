@@ -1,56 +1,48 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../config/database')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const Country = require('./Country');
 
-const Address = sequelize.define('address', {
-  IdAdress: {
-    type: Sequelize.INTEGER.UNSIGNED,
-    allowNull: false,
+const Address = sequelize.define('Address', {
+  IdAddress: {
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true
   },
-  IdPerson: {
-    type: Sequelize.INTEGER.UNSIGNED,
-    allowNull: false
-  },
   IdCountry: {
-    type: Sequelize.INTEGER.UNSIGNED,
-    allowNull: false
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    references: {
+      model: Country,
+      key: 'IdCountry'
+    },
+    onUpdate: 'NO ACTION',
+    onDelete: 'NO ACTION'
   },
   Street: {
-    type: Sequelize.STRING(50),
-    allowNull: true
+    type: DataTypes.STRING(50),
+    allowNull: true,
+    defaultValue: null,
+    collate: 'utf8mb4_0900_ai_ci'
   },
   City: {
-    type: Sequelize.STRING(50),
-    allowNull: true
+    type: DataTypes.STRING(50),
+    allowNull: true,
+    defaultValue: null,
+    collate: 'utf8mb4_0900_ai_ci'
   },
   Building: {
-    type: Sequelize.INTEGER,
-    allowNull: true
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null
   },
   Flat: {
-    type: Sequelize.INTEGER,
-    allowNull: true
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: null
   }
 }, {
   tableName: 'address',
-  indexes: [
-    {
-      name: 'FK_adress_country',
-      using: 'BTREE',
-      fields: ['IdCountry']
-    },
-    {
-      name: 'FK_adress_person',
-      using: 'BTREE',
-      fields: ['IdPerson']
-    }
-  ]
+  timestamps: false
 });
-
-Address.associate = function(models) {
-  Address.belongsTo(models.Country, { foreignKey: 'IdCountry', targetKey: 'IdCountry' });
-  Address.belongsTo(models.Person, { foreignKey: 'IdPerson', targetKey: 'IdPerson' });
-};
 
 module.exports = Address;
