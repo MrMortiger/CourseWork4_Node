@@ -32,17 +32,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each flights}}
+                    {{#each flight}}
                     <tr>
-                        <td>{{IdFlight}}</td>
-                        <td>{{IdPlane}}</td>
-                        <td>{{IdStatus.Name}}</td>
-                        <td>{{IdAirstrip}}</td>
-                        <td>{{NumberOfPassengers}}</td>
-                        <td>{{ShippingTime}}</td>
-                        <td>{{ArrivalTime}}</td>
-                        <td>{{PlaceOfDispatch}}</td>
-                        <td>{{PlaceOfArrival}}</td>
+                        <td>{{this.IdFlight}}</td>
+                        <td>{{this.IdPlane}}</td>
+                        <td>{{this.IdStatus}}</td>
+                        <td>{{this.IdAirstrip}}</td>
+                        <td>{{this.NumberOfPassengers}}</td>
+                        <td>{{this.ShippingTime}}</td>
+                        <td>{{this.ArrivalTime}}</td>
+                        <td>{{this.PlaceOfDispatch}}</td>
+                        <td>{{this.PlaceOfArrival}}</td>
                     </tr>
                     {{/each}}
                 </tbody>

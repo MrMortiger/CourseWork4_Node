@@ -48,21 +48,6 @@ app.get("/flightTable", function(req, res){
     }).catch(err=>console.log(err));
 });
 
-// app.get("/flightTable", function(req, res){
-//   Flight.findAll({ raw: true })
-//     .then(flightData => {
-//       FlightStatus.findAll({ raw: true })
-//         .then(flightStatusData => {
-//           res.render("flightTable.hbs", {
-//             flight: flightData,
-//             flightStatus: flightStatusData
-//           });
-//         })
-//         .catch(flightStatusErr => console.log(flightStatusErr));
-//     })
-//     .catch(flightErr => console.log(flightErr));
-// });
-
 app.get("/personTable/create", function(req, res){
     res.render("create.hbs");
 });
