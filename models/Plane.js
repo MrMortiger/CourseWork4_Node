@@ -2,9 +2,9 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Brand = require('./Brand');
 const Captain = require('./Captain');
-const SecondPilot = require('./Second_pilot');
-const FlightEngineer = require('./Flight_engineer');
-const FlightAttendant = require('./Flight_attendant');
+const SecondPilot = require('./SecondPilot');
+const FlightEngineer = require('./FlightEngineer');
+const FlightAttendant = require('./FlightAttendant');
 
 const Plane = sequelize.define('Plane', {
   IdPlane: {

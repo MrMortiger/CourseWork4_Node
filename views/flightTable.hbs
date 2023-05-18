@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Польотів</title>
+    <meta charset="utf-8" />
+
+</head>
+
+<body>
+    {{> menu}}
+
+    <div class="Db">
+        <div class="Db-data">
+            <h1>Список Польотів</h1>
+            {{!-- <p><a href="/flightTable/create">Добавить пользователя</a></p> --}}
+            <table id="table1">
+                <thead>
+                    <tr>
+                        <th>Flight ID</th>
+                        <th>Plane ID</th>
+                        <th>Status</th>
+                        <th>Airstrip ID</th>
+                        <th>Number of Passengers</th>
+                        <th>Shipping Time</th>
+                        <th>Arrival Time</th>
+                        <th>Place of Dispatch</th>
+                        <th>Place of Arrival</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each flights}}
+                    <tr>
+                        <td>{{IdFlight}}</td>
+                        <td>{{IdPlane}}</td>
+                        <td>{{IdStatus.Name}}</td>
+                        <td>{{IdAirstrip}}</td>
+                        <td>{{NumberOfPassengers}}</td>
+                        <td>{{ShippingTime}}</td>
+                        <td>{{ArrivalTime}}</td>
+                        <td>{{PlaceOfDispatch}}</td>
+                        <td>{{PlaceOfArrival}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    {{> footer}}
+</body>
+<html>

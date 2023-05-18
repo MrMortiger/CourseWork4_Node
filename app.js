@@ -2,6 +2,11 @@ const express = require("express");
 const hbs = require("hbs");
 hbs.registerPartials(__dirname + "/views/partials");
 
+// // Допоміжний блок Handlebars для знаходження назви статусу по IdStatus
+// hbs.registerHelper('lookup', function(obj, id) {
+//   return obj[id];
+// });
+
 const app = express();
 const urlencodedParser = express.urlencoded({ extended: false });
 
@@ -30,11 +35,38 @@ app.get("/personTable", function(req, res){
       });
     }).catch(err=>console.log(err));
 });
- 
+
+const Flight = require('./models/Flight')
+const FlightStatus = require('./models/FlightStatus')
+
+
+app.get("/flightTable", function(req, res){
+    Flight.findAll({raw: true }).then(data=>{
+      res.render("flightTable.hbs", {
+        flight: data
+      });
+    }).catch(err=>console.log(err));
+});
+
+// app.get("/flightTable", function(req, res){
+//   Flight.findAll({ raw: true })
+//     .then(flightData => {
+//       FlightStatus.findAll({ raw: true })
+//         .then(flightStatusData => {
+//           res.render("flightTable.hbs", {
+//             flight: flightData,
+//             flightStatus: flightStatusData
+//           });
+//         })
+//         .catch(flightStatusErr => console.log(flightStatusErr));
+//     })
+//     .catch(flightErr => console.log(flightErr));
+// });
+
 app.get("/personTable/create", function(req, res){
     res.render("create.hbs");
 });
- 
+
 // додання даних
 app.post("/personTable/create", urlencodedParser, function (req, res) {
          
